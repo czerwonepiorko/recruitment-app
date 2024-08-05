@@ -29,6 +29,10 @@ export default {
       .then(response => response.json())
       .then(data => {
         this.document = data;
+        console.log('Document loaded:', this.document);
+      })
+      .catch(error => {
+        console.error('Error loading document:', error);
       });
   },
   methods: {

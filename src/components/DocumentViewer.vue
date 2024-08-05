@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <div v-for="item in document" :key="item.id" class="document-section">
-      <p v-html="applyHighlights(item.text, item.id)"></p>
-    </div>
+  <div ref="documentContainer" class="document-container">
+    <p v-for="item in document" :key="item.id" v-html="applyHighlights(item.text, item.id)"></p>
   </div>
 </template>
 
@@ -27,7 +25,9 @@ export default {
   methods: {
     applyHighlightsToDOM(highlights) {
       this.$nextTick(() => {
-        const context = this.$el;
+        const context = this.$refs.documentContainer;
+ 
+
         const instance = new Mark(context);
         instance.unmark({
           done: () => {
@@ -46,13 +46,13 @@ export default {
     },
     applyHighlights(text, documentId) {
       const highlights = this.highlights.filter(h => h.documentId === documentId);
-      
+
       highlights
         .sort((a, b) => b.text.length - a.text.length)
         .forEach(h => {
           const escapedText = this.escapeRegExp(h.text);
           const regex = new RegExp(`(${escapedText})`, 'gi');
-          text = text.replace(regex, '<span style="background-color: red;">$1</span>');
+          text = text.replace(regex, '<span style="background-color: yellow;">$1</span>');
         });
 
       return text;
@@ -65,8 +65,8 @@ export default {
 </script>
 
 <style scoped>
-.highlight {
-  background-color: red;
-  color: white;
+.document-container {
+  white-space: pre-wrap; 
 }
+
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Highlights</h2>
+    <h2>Highlights List</h2>
     <ul>
       <li v-for="highlight in highlights" :key="highlight.id">
         {{ highlight.text }}
