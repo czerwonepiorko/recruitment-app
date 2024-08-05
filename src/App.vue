@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AddHighlight @addHighlight="addHighlight"/>
+    <AddHighlight @highlightAdded="addHighlight"/>
     <HighlightList :highlights="highlights" @removeHighlight="removeHighlight"/>
     <DocumentViewer :document="document" :highlights="highlights"/>
   </div>

@@ -18,15 +18,16 @@ export default {
       if (this.highlightText.trim()) {
         const highlight = {
           id: Date.now(),
-          documentId: 1, // Możesz dynamicznie ustawić ID dokumentu
+          documentId: 1,
           text: this.highlightText.trim()
         };
 
-        // Emituj zdarzenie z nowym zaznaczeniem
-        this.$emit('addHighlight', highlight);
+        let highlights = JSON.parse(localStorage.getItem('highlights')) || [];
+        highlights.push(highlight);
+        localStorage.setItem('highlights', JSON.stringify(highlights));
 
-        // Zresetuj pole tekstowe
         this.highlightText = '';
+        this.$emit('highlightAdded', highlight);
       }
     }
   }
