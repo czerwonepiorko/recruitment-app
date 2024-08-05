@@ -1,26 +1,48 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <AddHighlight @addHighlight="addHighlight"/>
+    <HighlightList :highlights="highlights" @removeHighlight="removeHighlight"/>
+    <DocumentViewer :document="document" :highlights="highlights"/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import DocumentViewer from './components/DocumentViewer.vue'
+import AddHighlight from './components/AddHighlight.vue'
+import HighlightList from './components/HighlightList.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    DocumentViewer,
+    AddHighlight,
+    HighlightList
+  },
+  data() {
+    return {
+      document: [],
+      highlights: JSON.parse(localStorage.getItem('highlights')) || []
+    }
+  },
+  created() {
+    fetch('/plik.json')
+      .then(response => response.json())
+      .then(data => {
+        this.document = data;
+      });
+  },
+  methods: {
+    addHighlight(highlight) {
+      this.highlights.push(highlight);
+      this.saveHighlights();
+    },
+    removeHighlight(highlightId) {
+      this.highlights = this.highlights.filter(h => h.id !== highlightId);
+      this.saveHighlights();
+    },
+    saveHighlights() {
+      localStorage.setItem('highlights', JSON.stringify(this.highlights));
+    }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
